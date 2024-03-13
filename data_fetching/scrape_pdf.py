@@ -1,6 +1,10 @@
 import fitz  # pdf processing
 import json 
 
+# PDF URL https://wtop.com/wp-content/uploads/2018/09/Best-Movies-in-Every-Genre.pdf
+## BY Film Critic Jason Fraley from WTOP
+
+
 def extract_text_from_pdf(pdf_path):
     """
     open pdf and extract all text.
