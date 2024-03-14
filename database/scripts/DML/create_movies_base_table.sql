@@ -2,7 +2,8 @@
 -- can always go back to this and re-create when database free trial gets deleted 
 -- data from api will always have same structure
 -- varchars for now, set datatypes later
-CREATE TABLE movies (
+-- this will serve as the "base table" which will serve as a source table to be normalised 
+CREATE TABLE movies_base (
 	title VARCHAR(255),
 	year VARCHAR(255),
 	rated VARCHAR(255),
