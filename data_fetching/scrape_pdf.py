@@ -1,4 +1,4 @@
-import fitz  # pdf processing
+import fitz  # pdf processing (PyMuPDF)
 import json 
 
 # PDF URL https://wtop.com/wp-content/uploads/2018/09/Best-Movies-in-Every-Genre.pdf

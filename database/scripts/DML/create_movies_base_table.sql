@@ -30,3 +30,26 @@ CREATE TABLE movies_base (
 	website VARCHAR(255),
 	respose VARCHAR(255)
 )
+
+
+-- REMOVE DUPLICATES FROM THE BASE TABLE AFTER INSERTING
+
+-- create temporary table to hold distinct rows
+create temp table temp_movies_base as
+select distinct *
+from movies_base;
+
+-- truncate original source table to remove all existing rows
+truncate table movies_base;
+
+-- insert distinct rows back into the original source table
+insert into movies_base
+select *
+from temp_movies_base;
+
+-- Drop the temporary table
+drop table temp_movies_base;
+
+-- COMPARISON
+select count(title) from movies_base;
+select count(distinct title) from movies_base;
