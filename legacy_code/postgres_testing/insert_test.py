@@ -24,21 +24,39 @@ def add_movie_to_database(movie_data):
     plot = movie_data['Plot']
     awards = movie_data['Awards']
     poster = movie_data['Poster']
-    ratings = movie_data['Ratings']
+    ratings = str(movie_data['Ratings'])
     metascore = movie_data['Metascore']
     imdbdrating = movie_data['imdbRating']
     imdbvotes = movie_data['imdbVotes']
     imdbid = movie_data['imdbID']
-    type = movie_data['Type']
+    type = movie_data['Type'] # LOOK INTO THIS NAME!!! CHANGE IT
     boxoffice = movie_data['BoxOffice']
 
     # GENRES TABLE COLUMNS
     genres = movie_data["Genre"]
 
+    # DIRECTOR TABLE COLUMNS
+    directors = movie_data["Director"]
+
+    # WRITER TABLE COLUMNS
+    writers = movie_data["Writer"]
+
+    # ACTOR TABLE COLUMNS
+    actors = movie_data["Actors"]
+
+    # LANGUAGE TABLE COLUMNS
+    languages = movie_data["Language"]
+
+    # COUNTRY TABLE COLUMNS
+    countries = movie_data["Country"]
+
+
 
 
     with psycopg.connect(f"host={pg_host} port={pg_port} dbname={pg_dbname} user={pg_user} password={pg_password}") as conn:
         with conn.cursor() as cur:
+
+            #### MOVIE TABLE INGESTION
             # chceck if movie exists in "movies"
             cur.execute("SELECT COUNT(*) FROM movies WHERE imdbid = %s", (movie_data['imdbID'],))
             movie_exists = cur.fetchone()[0] > 0
@@ -61,7 +79,7 @@ def add_movie_to_database(movie_data):
                      plot,
                      awards,
                      poster,
-                     "ratings",
+                     ratings,
                      metascore,
                      imdbdrating,
                      imdbvotes,
@@ -71,8 +89,9 @@ def add_movie_to_database(movie_data):
                     )
                 )
 
+                ### GENRE TABLE AND LINK TABLE INGESTION
                 # insert genres into "genres" and link with the movie in "movie_genres"
-                for genre in movie_data['Genre'].split(', '):
+                for genre in genres.split(', '):
                     # check if genre already exists in the "genres"
                     cur.execute("SELECT genre_id FROM genres WHERE genre_name = %s", (genre,))
                     existing_genre = cur.fetchone()
@@ -88,6 +107,10 @@ def add_movie_to_database(movie_data):
                     # link movie with genre in "movie_genres" link table
                     cur.execute("INSERT INTO movie_genres (movie_id, genre_id) VALUES (%s, %s)", (movie_id, genre_id))
 
+                
+                
+                
+                
                 print("Movie added to database")
 
                 # commit changes to database
@@ -95,6 +118,6 @@ def add_movie_to_database(movie_data):
 
 # movie_data
 # SPECIFY MOVIE TITLE FOR API CALL HERE, FIGURE OUT EFFICIENT WAY TO MAKE DAILY CALLS
-movies_data = fetch_data_for_titles(["Kill Bill"], api_key)
+movies_data = fetch_data_for_titles(["gladiator"], api_key)
 
 add_movie_to_database(movies_data)
