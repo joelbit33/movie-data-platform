@@ -86,3 +86,5 @@ print(f"Movie imdbvotes: {imdbvotes} - Type: {type(imdbvotes)}")
 print(f"Movie imdbid: {imdbid} - Type: {type(imdbid)}")
 print(f"Movie media_type: {media_type} - Type: {type(media_type)}")
 print(f"Movie boxoffice: {boxoffice} - Type: {type(boxoffice)}")
+
+## IF DATA DOES NOT EXIST IT WILL RETURN 'N/A', CATCH THIS!!!!!

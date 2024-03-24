@@ -120,6 +120,6 @@ def add_movie_to_database(movie_data):
 
 # movie_data
 # SPECIFY MOVIE TITLE FOR API CALL HERE, FIGURE OUT EFFICIENT WAY TO MAKE DAILY CALLS
-movies_data = fetch_data_for_titles(["john wick"], api_key)
+movies_data = fetch_data_for_titles(["FILM_TITEL"], api_key)
 
 add_movie_to_database(movies_data)
