@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 load_dotenv()  # load variables from .env file
 from data_fetching import fetch_data_for_titles, api_key
+from datetime import datetime
 
 
 
@@ -14,23 +15,29 @@ pg_password = os.getenv('PG_PASSWORD')
 
 def add_movie_to_database(movie_data):
 
+    # check for 'N/A' strings and convert to Nulls
+    for key, value in movies_data.items():
+        if value == 'N/A':
+            movies_data[key] = None
+
     # MOVIES TABLE COLUMNS
-    movie_id = movie_data['imdbID']
-    title = movie_data['Title'] 
-    year = movie_data['Year'] 
-    rated = movie_data['Rated'] 
-    released = movie_data['Released']
-    runtime = movie_data['Runtime']
-    plot = movie_data['Plot']
-    awards = movie_data['Awards']
-    poster = movie_data['Poster']
-    ratings = str(movie_data['Ratings'])
-    metascore = movie_data['Metascore']
-    imdbdrating = movie_data['imdbRating']
-    imdbvotes = movie_data['imdbVotes']
-    imdbid = movie_data['imdbID']
-    type = movie_data['Type'] # LOOK INTO THIS NAME!!! CHANGE IT
-    boxoffice = movie_data['BoxOffice']
+    movie_id = movies_data['imdbID']
+    title = movies_data['Title'] 
+    year = int(movies_data['Year']) if movies_data['Year'] is not None else None
+    rated = movies_data['Rated'] 
+    released = datetime.strptime(movies_data['Released'], "%d %b %Y").date()
+    runtime = int(movies_data['Runtime'].split()[0]) if movies_data['Runtime'] is not None else None
+    plot = movies_data['Plot']
+    awards = movies_data['Awards']
+    poster = movies_data['Poster']
+    ratings = str(movies_data['Ratings'])
+    metascore = float(movies_data['Metascore']) if movies_data['Metascore'] is not None else None
+    imdbdrating = float(movies_data['imdbRating']) if movies_data['imdbRating'] is not None else None
+    imdbvotes = int(movies_data['imdbVotes'].replace(',', '')) if movies_data['imdbVotes'] is not None else None
+    imdbid = movies_data['imdbID']
+    media_type = movies_data['Type']
+    boxoffice = int(movies_data['BoxOffice'].replace('$', '').replace(',', '')) if movies_data['BoxOffice'] is not None else None
+
 
     # GENRES TABLE COLUMNS
     genres = movie_data["Genre"]
@@ -49,7 +56,6 @@ def add_movie_to_database(movie_data):
 
     # COUNTRY TABLE COLUMNS
     countries = movie_data["Country"]
-
 
 
 
@@ -86,7 +92,7 @@ def add_movie_to_database(movie_data):
                      imdbdrating,
                      imdbvotes,
                      imdbid,
-                     type,
+                     media_type,
                      boxoffice
                     )
                 )
@@ -120,6 +126,6 @@ def add_movie_to_database(movie_data):
 
 # movie_data
 # SPECIFY MOVIE TITLE FOR API CALL HERE, FIGURE OUT EFFICIENT WAY TO MAKE DAILY CALLS
-movies_data = fetch_data_for_titles(["FILM_TITEL"], api_key)
+movies_data = fetch_data_for_titles(["On Y tu mamá también"], api_key)
 
 add_movie_to_database(movies_data)
