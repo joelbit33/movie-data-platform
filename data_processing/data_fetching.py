@@ -30,13 +30,3 @@ def fetch_data_for_titles(titles, api_key):
             # movies_data.append(movie_data)
             # print(f"Fetched {title}")
             return movie_data
-
-
-movie_title = ['On Y tu mamá también']
-
-movies_data = fetch_data_for_titles(movie_title, api_key)
-
-for key, value in movies_data.items():
-    if value == 'N/A':
-        movies_data[key] = None
-print(movies_data)

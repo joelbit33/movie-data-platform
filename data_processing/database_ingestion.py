@@ -13,9 +13,12 @@ pg_dbname = os.getenv('PG_DBNAME')
 pg_user = os.getenv('PG_USER')
 pg_password = os.getenv('PG_PASSWORD')
 
+def scan_none_values(movie):
+    pass
+
 def add_movie_to_database(movie_data):
 
-    # check for 'N/A' strings and convert to Nulls
+    # check for 'N/A' strings and convert to none
     for key, value in movies_data.items():
         if value == 'N/A':
             movies_data[key] = None
@@ -126,6 +129,6 @@ def add_movie_to_database(movie_data):
 
 # movie_data
 # SPECIFY MOVIE TITLE FOR API CALL HERE, FIGURE OUT EFFICIENT WAY TO MAKE DAILY CALLS
-movies_data = fetch_data_for_titles(["On Y tu mamá también"], api_key)
+movies_data = fetch_data_for_titles(["Stand by Me"], api_key)
 
 add_movie_to_database(movies_data)
